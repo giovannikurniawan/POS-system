@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Livewire\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +22,5 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/product', Product::class);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

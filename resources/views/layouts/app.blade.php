@@ -83,8 +83,11 @@
         </nav>
 
         <main class="py-4">
+            <div class="container-fluid">
+                {{ isset($slot) ? $slot : null }}
+            </div>
             @yield('content')
-            {{ isset($slot) ? $slot : null }}
+
         </main>
     </div>
     @livewireScripts
