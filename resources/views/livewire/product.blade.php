@@ -9,7 +9,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Name</th>
-                                <th>Image</th>
+                                <th width="20%">Image</th>
                                 <th>Description</th>
                                 <th>Qty</th>
                                 <th>Price</th>
@@ -19,7 +19,8 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $product->name }}</td>
-                                    <td>{{ $product->image }}</td>
+                                    <td><img src="{{ asset('storage/images/' . $product->image) }}" alt="product image"
+                                            class="img-fluid"></td>
                                     <td>{{ $product->description }}</td>
                                     <td>{{ $product->qty }}</td>
                                     <td>{{ $product->price }}</td>
