@@ -35,33 +35,63 @@
             <div class="card">
                 <div class="card-body">
                     <h2 class="fw-bold mb-3">Create Product</h2>
-                    <form>
+                    <form wire:submit.prevent="store">
                         <div class="mb-3">
                             <label for="exampleFormControlInput1" class="form-label">Product Name</label>
-                            <input wire:model="name" type="email" class="form-control" id="exampleFormControlInput1"
+                            <input wire:model="name" type="text" class="form-control" id="exampleFormControlInput1"
                                 placeholder="">
                             @error('name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        <label>Product Image</label>
-                        <div class="input-group mb-3">
-                            <input wire:model="image" type="file" class="form-control" id="inputGroupFile02">
-                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                            @error('name')
+                        <div class="form-group">
+                            <label>Product Image</label>
+                            <div class="input-group mb-3">
+                                <input wire:model="image" type="file" class="form-control" id="inputGroupFile02">
+                                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                                @error('image')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            @if ($image)
+                                <label class="mt-2">Image Preview:</label>
+                                <img src="{{ $image->temporaryUrl() }}" class="img-fluid" alt="Preview Image">
+                            @endif
+                        </div>
+                        <div class="mb-3">
+                            <label>Product Description</label>
+                            <textarea wire:model="description" class="form-control"></textarea>
+                            @error('description')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        @if ($image)
-                            <label class="mt-2">Image Preview:</label>
-                            <img src="{{ $image->temporaryUrl() }}" class="img-fluid" alt="Preview Image">
-                        @endif
+                        <div class="mb-3">
+                            <label>Product QTY</label>
+                            <input wire:model="qty" type="number" class="form-control">
+                            @error('qty')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label>Product Price</label>
+                            <input wire:model="price" type="number" class="form-control">
+                            @error('price')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Submit Product</button>
+                        </div>
                     </form>
                 </div>
             </div>
             <div class="card mt-3">
                 <div class="card-body">
                     <h3>{{ $name }}</h3>
+                    <h3>{{ $image }}</h3>
+                    <h3>{{ $description }}</h3>
+                    <h3>{{ $qty }}</h3>
+                    <h3>{{ $price }}</h3>
                 </div>
             </div>
         </div>

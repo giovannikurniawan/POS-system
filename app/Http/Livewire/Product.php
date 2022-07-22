@@ -4,7 +4,8 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\Product as ProducModel;
+use App\Models\Product as ProductModel;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Component
 {
@@ -14,7 +15,7 @@ class Product extends Component
 
     public function render()
     {
-        $products = ProducModel::orderBy('created_at', 'DESC')->get();
+        $products = ProductModel::orderBy('created_at', 'DESC')->get();
         return view('livewire.product', [
             'products' => $products
         ]);
@@ -25,5 +26,40 @@ class Product extends Component
         $this->validate([
             'image' => 'image|max:2048'
         ]);
+    }
+
+    public function store()
+    {
+        $this->validate([
+            'name' => 'required',
+            'image' => 'image|max:2048|required',
+            'description' => 'required',
+            'qty' => 'required',
+            'price' => 'required',
+        ]);
+
+        $imageName = md5($this->image . microtime() . '.' . $this->image->extension());
+
+        Storage::putFileAs(
+            'public/images',
+            $this->image,
+            $imageName
+        );
+
+        ProductModel::create([
+            'name' => $this->name,
+            'image' => $imageName,
+            'description' => $this->description,
+            'qty' => $this->qty,
+            'price' => $this->price
+        ]);
+
+        session()->flash('info', 'Product Created Successfully');
+
+        $this->name = '';
+        $this->iamge = '';
+        $this->description = '';
+        $this->qty = '';
+        $this->price = '';
     }
 }
