@@ -14,7 +14,7 @@ class Cart extends Component
     {
         $products = ProductModel::orderBy('created_at', 'DESC')->get();
 
-        $condition = new \Derrydecode\Cart\CartCondition([
+        $condition = new \Darryldecode\Cart\CartCondition([
             'name' => 'pajak',
             'type' => 'tax',
             'target' => $this->tax,
@@ -26,7 +26,41 @@ class Cart extends Component
             return $cart->attributes->get('added_at');
         });
 
+        if(\Cart::isEmpty()){
+            $cartData = [];
+        }else{
+            foreach($items as $item){
+                $cart[] = [
+                    'rowId' => $item->id,
+                    'name' => $item->name,
+                    'qty' => $item->quantity,
+                    'pricesingle' => $item->price,
+                    'price' => $item->getPriceSum()
 
-        return view('livewire.cart');
+                ];
+            }
+
+            $cartData = collect($cart);
+        }
+
+        $sub_total = \Cart::session(Auth()->id())->getSubTotal();
+        $total = \Cart::session(Auth()->id())->getTotal();
+
+        $newCondition = \cart::session(Auth()->id())->getCondition('pajak');
+        $pajak = $newCondition->getCalculatedValue($sub_total);
+
+        $summary = [
+            'sub_total' => $sub_total,
+            'pajak' => $pajak,
+            'sumary' => $total
+
+        ];
+
+
+        return view('livewire.cart', [
+            'products' => $products,
+            'carts' => $cartData,
+            'summary' => $summary
+        ]);
     }
 }
